@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+// 게시글 삭제 진행. => 6시 10분까지 진행.
 
 public class Main {
   public static void main(String[] args) {
@@ -44,7 +45,24 @@ public class Main {
             Article article = articles.get(i);
             System.out.printf("  %d  /  %s  /  %s  \n", article.getId(), article.getTitle(), article.getBody());
           }
+        } //"article delete 3"
+      }else if (cmd.startsWith("article delete")) {
+        System.out.println("== 게시글 삭제 ==");
+        int id = Integer.parseInt(cmd.split(" ")[2]);
+
+        Article foundArticle = null;
+        for (Article article : articles) {
+          if (article.getId() == id) {
+            foundArticle = article;
+            break;
+          }
         }
+        if (foundArticle == null) {
+          System.out.println("해당 게시글은 없습니다.");
+          continue;
+        }
+        articles.remove(foundArticle);
+        System.out.println(id + "번 게시글이 삭제되었습니다.");
       }
     }
     System.out.println("== 프로그램 종료 ==");
