@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-// 게시글 삭제 진행. => 6시 10분까지 진행.
 
+// 게시글 수정 => setter 활용.
+// 게시글 상세보기
 public class Main {
   public static void main(String[] args) {
     System.out.println("== 프로그램 시작 ==");
@@ -46,7 +47,7 @@ public class Main {
             System.out.printf("  %d  /  %s  /  %s  \n", article.getId(), article.getTitle(), article.getBody());
           }
         } //"article delete 3"
-      }else if (cmd.startsWith("article delete")) {
+      } else if (cmd.startsWith("article delete")) {
         System.out.println("== 게시글 삭제 ==");
         int id = Integer.parseInt(cmd.split(" ")[2]);
 
@@ -63,6 +64,52 @@ public class Main {
         }
         articles.remove(foundArticle);
         System.out.println(id + "번 게시글이 삭제되었습니다.");
+      } else if (cmd.startsWith("article modify")) {
+        int id = Integer.parseInt(cmd.split(" ")[2]);
+
+        Article foundArticle = null;
+        for (Article article : articles) {
+          if (article.getId() == id) {
+            foundArticle = article;
+            break;
+          }
+        }
+        if (foundArticle == null) {
+          System.out.println("해당 게시글은 없습니다.");
+          continue;
+        }
+        System.out.println("기존 title : " + foundArticle.getTitle());
+        System.out.println("기존 body : " + foundArticle.getBody());
+
+        System.out.print("새 제목 : ");
+        String newTitle = sc.nextLine().trim();
+
+        System.out.print("새 내용 : ");
+        String newBody = sc.nextLine().trim();
+
+        foundArticle.setTitle(newTitle);
+        foundArticle.setBody(newBody);
+        System.out.println(id + "번 게시글이 수정되었습니다.");
+      } else if (cmd.startsWith("article detail")) {
+        System.out.println("== 게시글 상세보기 ==");
+        int id = Integer.parseInt(cmd.split(" ")[2]);
+
+        Article foundArticle = null;
+        for (Article article : articles) {
+          if (article.getId() == id) {
+            foundArticle = article;
+            break;
+          }
+        }
+        if (foundArticle == null) {
+          System.out.println("해당 게시글은 없습니다.");
+          continue;
+        }
+        System.out.println("번호 : " + foundArticle.getId());
+        System.out.println("제목 : " + foundArticle.getTitle());
+        System.out.println("내용 : " + foundArticle.getBody());
+      } else {
+        System.out.println("사용할 수 없는 명령어 입니다.");
       }
     }
     System.out.println("== 프로그램 종료 ==");
@@ -74,6 +121,19 @@ class Article {
   private int id;
   private String title;
   private String body;
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setBody(String body) {
+    this.body = body;
+  }
+
 
   public int getId() {
     return id;
