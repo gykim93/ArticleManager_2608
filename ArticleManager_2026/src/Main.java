@@ -1,3 +1,5 @@
+//import jdk.jshell.execution.Util;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,7 +33,10 @@ public class Main {
         System.out.print("내용 : ");
         String body = sc.nextLine().trim();
 
-        Article article = new Article(id, title, body);
+        String regDate = Util.getNowStr();
+        String updateDate = Util.getNowStr();
+
+        Article article = new Article(id, regDate, title, body);
         articles.add(article);
 
         System.out.printf("%d번 글이 작성되었습니다.\n", id);
@@ -41,12 +46,16 @@ public class Main {
         if (articles.size() == 0) {
           System.out.println("게시글이 존재하지 않습니다.");
         } else {
-          System.out.println("  번호  /  제목  /  내용  ");
+          System.out.println("  번호  /  날짜  /  제목  /  내용  ");
           for (int i = articles.size() - 1; i >= 0; i--) {
             Article article = articles.get(i);
-            System.out.printf("  %d  /  %s  /  %s  \n", article.getId(), article.getTitle(), article.getBody());
+            if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
+              System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
+            } else {
+              System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
+            }
           }
-        } //"article delete 3"
+        }
       } else if (cmd.startsWith("article delete")) {
         System.out.println("== 게시글 삭제 ==");
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -89,6 +98,8 @@ public class Main {
 
         foundArticle.setTitle(newTitle);
         foundArticle.setBody(newBody);
+
+        foundArticle.setUpdateDate(Util.getNowStr());
         System.out.println(id + "번 게시글이 수정되었습니다.");
       } else if (cmd.startsWith("article detail")) {
         System.out.println("== 게시글 상세보기 ==");
@@ -106,6 +117,8 @@ public class Main {
           continue;
         }
         System.out.println("번호 : " + foundArticle.getId());
+        System.out.println("작성날짜 : " + foundArticle.getRegDate());
+        System.out.println("수정날짜 : " + foundArticle.getUpdateDate());
         System.out.println("제목 : " + foundArticle.getTitle());
         System.out.println("내용 : " + foundArticle.getBody());
       } else {
@@ -121,6 +134,26 @@ class Article {
   private int id;
   private String title;
   private String body;
+  private String updateDate;
+  private String regDate;
+
+  public String getRegDate() {
+    return regDate;
+  }
+
+  public String getUpdateDate() {
+    return updateDate;
+  }
+
+
+  public void setUpdateDate(String updateDate) {
+    this.updateDate = updateDate;
+  }
+
+  public void setRegDate(String regDate) {
+    this.regDate = regDate;
+  }
+
 
   public void setId(int id) {
     this.id = id;
@@ -147,8 +180,9 @@ class Article {
     return body;
   }
 
-  public Article(int id, String title, String body) {
+  public Article(int id, String regDate, String title, String body) {
     this.id = id;
+    this.regDate = regDate;
     this.title = title;
     this.body = body;
   }
