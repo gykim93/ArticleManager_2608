@@ -7,12 +7,14 @@ import java.util.Scanner;
 // 게시글 수정 => setter 활용.
 // 게시글 상세보기
 public class Main {
+  static List<Article> articles = new ArrayList<>();
+
   public static void main(String[] args) {
+
     System.out.println("== 프로그램 시작 ==");
     Scanner sc = new Scanner(System.in);
-    int lastArticleId = 0;
-
-    List<Article> articles = new ArrayList<>();
+    int lastArticleId = 3;
+    makeTestDate();
 
     while (true) {
       System.out.print("명령어 ) ");
@@ -36,7 +38,7 @@ public class Main {
         String regDate = Util.getNowStr();
         String updateDate = Util.getNowStr();
 
-        Article article = new Article(id, regDate, title, body);
+        Article article = new Article(id, regDate, updateDate, title, body);
         articles.add(article);
 
         System.out.printf("%d번 글이 작성되었습니다.\n", id);
@@ -128,7 +130,15 @@ public class Main {
     System.out.println("== 프로그램 종료 ==");
     sc.close();
   }
+
+  private static void makeTestDate() {
+    System.out.println("== 테스트 데이터 생성 ==");
+    articles.add(new Article(1, "2026-08-14 18:06:00", "2026-08-17 17:00:01", "제목1", "내용1"));
+    articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목2", "내용2"));
+    articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목3", "내용3"));
+  }
 }
+
 
 class Article {
   private int id;
@@ -180,9 +190,10 @@ class Article {
     return body;
   }
 
-  public Article(int id, String regDate, String title, String body) {
+  public Article(int id, String regDate, String updateDate, String title, String body) {
     this.id = id;
     this.regDate = regDate;
+    this.updateDate = updateDate;
     this.title = title;
     this.body = body;
   }
