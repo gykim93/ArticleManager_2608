@@ -43,14 +43,31 @@ public class Main {
 
         System.out.printf("%d번 글이 작성되었습니다.\n", id);
         lastArticleId++;
-      } else if (cmd.equals("article list")) {
+      } else if (cmd.startsWith("article list")) {
         System.out.println("== 게시물 목록 ==");
         if (articles.size() == 0) {
           System.out.println("게시글이 존재하지 않습니다.");
-        } else {
+          continue;
+        }
+        String searchKeyword = cmd.substring("article list".length()).trim(); // article list 제목
+
+        List<Article> forPrintArticles = articles;
+        if (searchKeyword.length() > 0) {
+          System.out.println("검색어 : " + searchKeyword);
+          forPrintArticles = new ArrayList<>();
+
+          for (Article article : articles) {
+            if (article.getTitle().contains(searchKeyword)) {
+              forPrintArticles.add(article);
+            }
+          }
+          if (forPrintArticles.size() == 0) {
+            System.out.println("검색 결과 없음");
+            continue;
+          }
           System.out.println("  번호  /  날짜  /  제목  /  내용  ");
-          for (int i = articles.size() - 1; i >= 0; i--) {
-            Article article = articles.get(i);
+          for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+            Article article = forPrintArticles.get(i);
             if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
               System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
             } else {
@@ -58,6 +75,7 @@ public class Main {
             }
           }
         }
+
       } else if (cmd.startsWith("article delete")) {
         System.out.println("== 게시글 삭제 ==");
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -115,7 +133,8 @@ public class Main {
     System.out.println("== 프로그램 종료 ==");
     sc.close();
   }
-  private static Article getArticleById(int id){
+
+  private static Article getArticleById(int id) {
     for (Article article : articles) {
       if (article.getId() == id) {
         return article;
