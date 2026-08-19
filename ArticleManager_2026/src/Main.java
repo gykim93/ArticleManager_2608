@@ -65,17 +65,16 @@ public class Main {
             System.out.println("검색 결과 없음");
             continue;
           }
-          System.out.println("  번호  /  날짜  /  제목  /  내용  ");
-          for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
-            Article article = forPrintArticles.get(i);
-            if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
-              System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
-            } else {
-              System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
-            }
+        }
+        System.out.println("  번호  /  날짜  /  제목  /  내용  ");
+        for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+          Article article = forPrintArticles.get(i);
+          if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
+            System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
+          } else {
+            System.out.printf("  %d  /  %s  /  %s  /  %s  \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
           }
         }
-
       } else if (cmd.startsWith("article delete")) {
         System.out.println("== 게시글 삭제 ==");
         int id = Integer.parseInt(cmd.split(" ")[2]);
