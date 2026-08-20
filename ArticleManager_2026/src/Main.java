@@ -14,9 +14,9 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     int lastArticleId = 3;
 
-    int lastMemberId = 0;
-    makeTestDate();
-
+    int lastMemberId = 3;
+    articleMakeTestDate();
+    memberMakeTestDate();
     while (true) {
       System.out.print("명령어 ) ");
       String cmd = sc.nextLine().trim();
@@ -186,11 +186,18 @@ public class Main {
     return null;
   }
 
-  private static void makeTestDate() {
-    System.out.println("== 테스트 데이터 생성 ==");
+  private static void articleMakeTestDate() {
+    System.out.println("== 게시글 테스트 데이터 생성 ==");
     articles.add(new Article(1, "2026-08-14 18:06:00", "2026-08-17 17:00:01", "제목1", "내용1"));
     articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목2", "내용2"));
     articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목3", "내용3"));
+  }
+
+  private static void memberMakeTestDate() {
+    System.out.println("== 회원 테스트 데이터 생성 ==");
+    members.add(new Member(1,Util.getNowStr(), Util.getNowStr(), "test1", "test1", "회원1"));
+    members.add(new Member(2,Util.getNowStr(), Util.getNowStr(), "test2", "test2", "회원2"));
+    members.add(new Member(3,Util.getNowStr(), Util.getNowStr(), "test3", "test3", "회원3"));
   }
 }
 
