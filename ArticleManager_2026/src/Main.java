@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// 게시글 수정 => setter 활용.
-// 게시글 상세보기
 public class Main {
   static List<Article> articles = new ArrayList<>();
+  static List<Member> members = new ArrayList<>();
 
   public static void main(String[] args) {
 
     System.out.println("== 프로그램 시작 ==");
     Scanner sc = new Scanner(System.in);
     int lastArticleId = 3;
+
+    int lastMemberId = 0;
     makeTestDate();
 
     while (true) {
@@ -26,7 +27,41 @@ public class Main {
         System.out.println("명령어를 입력해주세요.");
         continue;
       }
-      if (cmd.equals("article write")) {
+      if (cmd.equals("member join")) {
+        System.out.println("== 회원가입 ==");
+        int id = lastMemberId + 1;
+        String loginId = null;
+        while (true) {
+          System.out.print("로그인 아이디 : ");
+          loginId = sc.nextLine().trim();
+          if (isJoinableLoginId(loginId) == false) {
+            System.out.println("이미 사용중인 loginId");
+            continue;
+          }
+          break;
+        }
+        String password = null;
+        while (true) {
+          System.out.print("비밀번호 : ");
+          password = sc.nextLine().trim();
+          System.out.print("비밀번호 확인 : ");
+          String passwordConfirm = sc.nextLine().trim();
+          if (password.equals(passwordConfirm) == false) {
+            System.out.println("비밀번호를 확인하세요.");
+            continue;
+          }
+          break;
+        }
+        System.out.print("이름 : ");
+        String name = sc.nextLine().trim();
+        String regDate = Util.getNowStr();
+        String updateDate = Util.getNowStr();
+
+        Member member = new Member(id, regDate, updateDate, loginId, password, name);
+        members.add(member);
+        System.out.println(id + "번 회원이 가입 되었습니다.");
+        lastMemberId++;
+      } else if (cmd.equals("article write")) {
         System.out.println("== 게시글 작성 ==");
         int id = lastArticleId + 1;
         System.out.print("제목 : ");
@@ -131,6 +166,15 @@ public class Main {
     }
     System.out.println("== 프로그램 종료 ==");
     sc.close();
+  }
+
+  private static boolean isJoinableLoginId(String loginId) {
+    for (Member member : members) {
+      if (member.getLoginId().equals(loginId)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private static Article getArticleById(int id) {
